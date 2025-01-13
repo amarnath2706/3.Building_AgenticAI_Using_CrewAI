@@ -18,7 +18,8 @@ os.environ["SERPER_API_KEY"] = SERPER_API_KEY  # Your serper.dev API key
 #os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 os.environ["GROQ_API_KEY"] = GROQ_API_KEY
 #os.environ["OPENAI_MODEL"] = "gpt-4-32k"
-os.environ['GROQ_MODEL'] = "llama3-70b-8192"
+#os.environ['GROQ_MODEL'] = ChatGroq(model="llama3-70b-8192")
+llm = ChatGroq(model="llama3-70b-8192")
 
 search_tool = SerperDevTool()
 
@@ -34,7 +35,8 @@ researcher = Agent(
         the world."""
     ),
     tools=[search_tool],
-    allow_delegation=True #here i multiagents and i make it as True
+    allow_delegation=True, #here i have an another agent and i make it as True
+    llm = llm
 )
 
 # Creating a writer agent with custom tools and delegation capability
@@ -49,7 +51,9 @@ writer = Agent(
         discoveries to light in an accessible manner."""
     ),
     tools=[search_tool],
-    allow_delegation=False #here we have 2 agents only if you have another agent them you make it as True
+    #here we have 2 agents only if you have another agent them you make it as True
+    allow_delegation=False, 
+    llm = llm
 ) 
 
 
